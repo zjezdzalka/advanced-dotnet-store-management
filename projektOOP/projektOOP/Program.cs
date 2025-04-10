@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using projektOOP.Classes;
 
@@ -30,7 +31,7 @@ namespace projektOOP
             bool loginStatus;
             do
             {
-                System.Threading.Thread.Sleep(1500);
+                Thread.Sleep(1500);
                 Console.Clear();
                 Console.Write("Enter login: ");
                 string login = Console.ReadLine();
@@ -44,36 +45,62 @@ namespace projektOOP
         }
         public static void Register(PasswordManager passwordManager)
         {
-            bool registerStatus = false;
-            registerLoop:
-            do
+            while (true)
             {
-                System.Threading.Thread.Sleep(1500);
                 Console.Clear();
                 Console.Write("Enter login: ");
-                string login = Console.ReadLine();
+                string login = Console.ReadLine()?.Trim();
                 Console.Write("Enter password: ");
                 string password1 = Console.ReadLine();
                 Console.Write("Repeat password: ");
                 string password2 = Console.ReadLine();
-                if (password1 != password2)
+
+                if (string.IsNullOrEmpty(login))
                 {
-                    Console.WriteLine("Passwords are not the same");
+                    Console.WriteLine("Login cannot be empty");
+                    Thread.Sleep(1500);
                     continue;
                 }
-                foreach (var line in File.ReadAllLines("users.txt"))
+
+                if (password1 != password2)
                 {
-                    if (line.StartsWith(login))
+                    Console.WriteLine("Passwords do not match");
+                    Thread.Sleep(1500);
+                    continue;
+                }
+
+                bool userExists = false;
+                if (File.Exists("users.txt"))
+                {
+                    foreach (var line in File.ReadLines("users.txt"))
                     {
-                        Console.WriteLine("There is an account with the same login");
-                        goto registerLoop;
+                        if (line.StartsWith(login + " "))
+                        {
+                            userExists = true;
+                            break;
+                        }
                     }
                 }
-                File.AppendAllText("users.txt", $"{login} {passwordManager.HashPassword(password1)}\n");
-                Console.WriteLine("Account created");
-                registerStatus = true;
-            }while(!registerStatus);
-            
+
+                if (userExists)
+                {
+                    Console.WriteLine("Username already exists");
+                    Thread.Sleep(1500);
+                    continue;
+                }
+
+                try
+                {
+                    File.AppendAllText("users.txt", $"{login} {passwordManager.HashPassword(password1)}\n");
+                    Console.WriteLine("Account created successfully!");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error creating account: {ex.Message}");
+                    Thread.Sleep(1500);
+                }
+            }
         }
         static void Main(string[] args)
         {
@@ -88,9 +115,11 @@ namespace projektOOP
             product3.ShowInfo();
             product4.ShowInfo();
             */
+
             PasswordManager passwordManager = new PasswordManager();
             BlikPayment blik = new BlikPayment();
             CardPayment card = new CardPayment();
+
             /*
             string password = "niger";
             File.AppendAllText("users.txt", $"marek {passwordManager.HashPassword(password)}");
@@ -98,6 +127,7 @@ namespace projektOOP
             {
                 Console.WriteLine("nigger");
             }*/
+
             string password = "niger";
             File.AppendAllText("users.txt", $"marek {passwordManager.HashPassword(password)}\n");
             showMenu(passwordManager);
@@ -124,11 +154,10 @@ namespace projektOOP
             switch (choice)
             {
                 case 1:
-                    Program.Login(passwordManager);
+                    Login(passwordManager);
                     break;
                 case 2:
-                    Program.Register(passwordManager);
-                    Program.Login(passwordManager);
+                    Register(passwordManager);
                     break;
                 default:
                     Environment.Exit(0);

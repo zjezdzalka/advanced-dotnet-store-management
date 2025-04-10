@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,11 +51,10 @@ namespace projektOOP
         public string Category { get; set; }
         public Product(string name, string description, string category)
         {
-            ID = counter;
+            ID = counter++;
             Name = name;
             Description = description;
             Category = category;
-            counter = counter + 1;
         }
 
         public void ShowInfo()
@@ -89,14 +90,29 @@ namespace projektOOP
         public string Password { get; set; }
         public Role Role { get; set; }
         public string Email { get; set; }
+
     }
     class Order
     {
-
+        public int OrderID { get; set; }
+        private static int counter = 1;
+        public Order() 
+        { 
+            OrderID = counter++;
+        }
+        public void ShowOrderDetails()
+        {
+            Console.WriteLine($"Id: {OrderID}");
+        }
     }
     class ShoppingCart
     {
-
+        public Dictionary<Product, int> ShoppingCartContent { get; set; }
+        public ShoppingCart()
+        {
+            ShoppingCartContent = new Dictionary<Product, int>();
+        }
+        
     }
     class PaymentProcessor
     {
@@ -232,7 +248,6 @@ namespace projektOOP
             {
                 case 1:
                     Program.Login(passwordManager);
-                 
                     break;
                 case 2:
                     Program.Register(passwordManager);

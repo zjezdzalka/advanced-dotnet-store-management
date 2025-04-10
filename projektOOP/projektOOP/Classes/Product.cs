@@ -1,29 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
-namespace projektOOP.Classes
+namespace projektOOP
 {
-    internal class Product
+    public class Product
     {
-        public int ID;
-        private static int counter = 1;
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }
-        public Product(string name, string description, string category)
-        {
-            ID = counter++;
-            Name = name;
-            Description = description;
-            Category = category;
-        }
+        public decimal UnitPrice { get; set; }
+        public decimal VAT { get; set; }
+        public int Quantity { get; set; }
 
-        public void ShowInfo()
+        public override string ToString()
         {
-            Console.WriteLine($"ID: {ID}");
+            return $"ID: {Id}, Name: {Name}, Price: {UnitPrice:C}, VAT: {VAT:P}, Quantity: {Quantity}";
         }
     }
 }

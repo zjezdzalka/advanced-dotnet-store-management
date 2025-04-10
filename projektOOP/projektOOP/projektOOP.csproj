@@ -45,18 +45,19 @@
   <ItemGroup>
     <Compile Include="Classes\Payments\BlikPayment.cs" />
     <Compile Include="Classes\Payments\CardPayment.cs" />
-    <Compile Include="Classes\Order.cs" />
     <Compile Include="Classes\PasswordManager.cs" />
     <Compile Include="Classes\PaymentProcessor.cs" />
     <Compile Include="Classes\Product.cs" />
     <Compile Include="Classes\RBAC.cs" />
-    <Compile Include="Classes\ShoppingCart.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\products.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

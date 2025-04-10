@@ -7,6 +7,7 @@ using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using projektOOP.Classes;
 
 namespace projektOOP
 {
@@ -21,141 +22,7 @@ namespace projektOOP
         string Name { get; set; }
         void Pay();
     }
-    class RBAC
-    {
-        private readonly Dictionary<Role, List<string>> _rolePermissions;
-        public RBAC()
-        {
-            _rolePermissions = new Dictionary<Role, List<string>>
-            {
-                {Role.Admin, new List<string>{"Read","Write","Delete"}},
-                {Role.Manager, new List<string>{"Read","Write"}},
-                {Role.User, new List<string>{"Read"}}
-            };
-        }
-        public bool HasPermission(User user, string permission)
-        {
-            if (_rolePermissions.ContainsKey(user.Role) && _rolePermissions[user.Role].Contains(permission))
-            {
-                return true;
-            }
-            return false;
-        }
-    }
-    class Product
-    {
-        public int ID;
-        private static int counter = 1;
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }
-        public Product(string name, string description, string category)
-        {
-            ID = counter++;
-            Name = name;
-            Description = description;
-            Category = category;
-        }
 
-        public void ShowInfo()
-        {
-            Console.WriteLine($"ID: {ID}");
-        }
-    }
-    class PasswordManager
-    {
-        public bool VerifyPassword(string name, string password)
-        {
-            foreach (var line in File.ReadAllLines("users.txt"))
-            {
-                if(line.StartsWith(name) && line.Contains(HashPassword(password)))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        public string HashPassword(string password)
-        {
-            using (var sha256 = SHA256.Create())
-            {
-                var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return Convert.ToBase64String(bytes);
-            }
-        }
-    }
-    class User
-    {
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public Role Role { get; set; }
-        public string Email { get; set; }
-
-    }
-    class Order
-    {
-        public int OrderID { get; set; }
-        private static int counter = 1;
-        public Order() 
-        { 
-            OrderID = counter++;
-        }
-        public void ShowOrderDetails()
-        {
-            Console.WriteLine($"Id: {OrderID}");
-        }
-    }
-    class ShoppingCart
-    {
-        public Dictionary<Product, int> ShoppingCartContent { get; set; }
-        public ShoppingCart()
-        {
-            ShoppingCartContent = new Dictionary<Product, int>();
-        }
-        
-    }
-    class PaymentProcessor
-    {
-        public delegate void PayVia();
-        public event PayVia OnPay;
-
-        public void PaymentMethod(IPayment paymentMethod)
-        {
-            if(OnPay != null && OnPay.GetInvocationList().Length > 0)
-            {
-                foreach (var method in OnPay.GetInvocationList())
-                {
-                    OnPay -= (PayVia)method;
-                }
-            }
-            OnPay += paymentMethod.Pay;
-            Console.WriteLine($"You chose: {paymentMethod.Name}");
-        }
-    }
-    class BlikPayment : IPayment
-    {
-        public string Name { get; set; }
-        public BlikPayment()
-        {
-            Name = "Blik payment";
-        }
-        public void Pay()
-        {
-
-        }
-    }
-    class CardPayment : IPayment
-    {
-        public string Name { get; set; }
-        public CardPayment()
-        {
-            Name = "Card payment";
-        }
-        public void Pay()
-        {
-
-        }
-    }
     internal class Program
     {
         public static void Login(PasswordManager passwordManager)
@@ -233,6 +100,16 @@ namespace projektOOP
             }*/
             string password = "niger";
             File.AppendAllText("users.txt", $"marek {passwordManager.HashPassword(password)}\n");
+            showMenu(passwordManager);
+            while (true)
+            {
+                Console.WriteLine("nigger");
+                break;
+            }
+        }
+
+        private static void showMenu(PasswordManager passwordManager)
+        {
             Console.WriteLine("1. Login");
             Console.WriteLine("2. Register");
             Console.WriteLine("3. Exit");
@@ -256,11 +133,6 @@ namespace projektOOP
                 default:
                     Environment.Exit(0);
                     break;
-            }
-            while (true)
-            {
-                Console.WriteLine("nigger");
-                break;
             }
         }
     }

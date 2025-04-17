@@ -43,13 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Payments\BlikPayment.cs" />
-    <Compile Include="Classes\Payments\CardPayment.cs" />
-    <Compile Include="Classes\PasswordManager.cs" />
-    <Compile Include="Classes\PaymentProcessor.cs" />
-    <Compile Include="Classes\Product.cs" />
-    <Compile Include="Classes\RBAC.cs" />
-    <Compile Include="Classes\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\products.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Classes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

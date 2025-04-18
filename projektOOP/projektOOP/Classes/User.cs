@@ -360,17 +360,23 @@ namespace projektOOP.Classes
             var users = File.ReadAllLines("users.txt").ToList();
             var userToRemove = users.FirstOrDefault(u => u.StartsWith(username + ","));
 
-            if (userToRemove != null)
+            if (userToRemove != null && userToRemove != Username)
             {
                 users.Remove(userToRemove);
                 File.WriteAllLines("users.txt", users);
                 Console.WriteLine("User removed successfully!");
                 logger.Log($"User {Username} removed user {username}");
             }
-            else
+            else if(userToRemove == null)
             {
                 Console.WriteLine("User not found!");
             }
+            else
+            {
+                Console.WriteLine("You cannot remove yourself!");
+            }
+
+            Console.WriteLine("Press any key to continue...");
 
             Console.ReadKey();
         }

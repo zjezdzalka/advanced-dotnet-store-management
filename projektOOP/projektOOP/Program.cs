@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+
 using projektOOP.Classes;
 using projektOOP.Interfaces;
 using projektOOP.Services;
 using projektOOP.Utils;
 
+
 namespace ProjektOOP
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             InitializeFiles();

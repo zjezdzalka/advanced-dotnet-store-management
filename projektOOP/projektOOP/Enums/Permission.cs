@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace projektOOP.Enums
 {
-    [Flags]
     public enum Permission
     {
         None,

@@ -66,7 +66,7 @@ namespace projektOOP.Classes
             else
             {
                 var orders = orderManager.GetOrders().ToList();
-                const int pageSize = 5;
+                const int pageSize = 15;
                 int currentPage = 0;
 
                 while (true)
@@ -146,7 +146,7 @@ namespace projektOOP.Classes
                             Console.WriteLine("Order placed successfully!");
                             logger.Log($"User {Username} ordered {qty}x {name}");
                             orderManager.LogOrder(Username, name, qty, totalPrice);
-
+                            Console.WriteLine("Press any key to continue...");
                             parts[1] = (stock - qty).ToString();
                             products[i] = string.Join(",", parts);
                             File.WriteAllLines("products.txt", products);
@@ -386,7 +386,7 @@ namespace projektOOP.Classes
             else
             {
                 var users = File.ReadLines("users.txt").ToList();
-                const int pageSize = 5;
+                const int pageSize = 15;
                 int currentPage = 0;
 
                 while (true)
@@ -449,7 +449,7 @@ namespace projektOOP.Classes
             else
             {
                 var logs = fileLogger.GetLogs().ToList();
-                const int pageSize = 5;
+                const int pageSize = 15;
                 int currentPage = 0;
 
                 while (true)
@@ -485,7 +485,7 @@ namespace projektOOP.Classes
             else
             {
                 var products = File.ReadLines("products.txt").ToList();
-                const int pageSize = 5;
+                const int pageSize = 15;
                 int currentPage = 0;
 
                 while (true)

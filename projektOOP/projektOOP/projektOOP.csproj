@@ -47,7 +47,6 @@
     <Compile Include="Enums\Permission.cs" />
     <Compile Include="Enums\Role.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
-
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\OrderManager.cs" />

@@ -27,7 +27,6 @@ namespace projektOOP.Classes
                 Console.Clear();
                 Console.WriteLine($"{Role.ToString().ToUpper()} PANEL - {Username}");
 
-                // Display menu options based on permissions
                 int optionNumber = 1;
                 var availableOptions = new Dictionary<int, Action>();
                 foreach (var option in menuOptions)
@@ -95,7 +94,6 @@ namespace projektOOP.Classes
 
         public void ShowMenu(PasswordManager passwordManager, ILogger logger, RBAC rbac, OrderManager orderManager)
         {
-            // Define menu options with their required permissions and corresponding actions
             var menuOptions = new Dictionary<Permission, (string, Action)>
             {
                 { Permission.ViewUsers, ("List Users", () => ListUsers(logger)) },
@@ -108,12 +106,10 @@ namespace projektOOP.Classes
                 { Permission.ViewOrderLogs, ("View Order Logs", () => ViewOrders(logger, orderManager)) }
             };
 
-            // Filter menu options based on the user's permissions
             var filteredMenuOptions = menuOptions
-                .Where(option => rbac.HasPermission(this, option.Key)) // Check if the user has the required permission
+                .Where(option => rbac.HasPermission(this, option.Key)) 
                 .ToDictionary(option => option.Key, option => option.Value);
 
-            // Pass the filtered menu options to the DisplayMenu method
             DisplayMenu(filteredMenuOptions, rbac);
         }
 
@@ -168,7 +164,6 @@ namespace projektOOP.Classes
         private bool MakePayment(decimal orderPrice, ILogger logger)
         {
             Console.Clear();
-            // First line - time remaining will be updated here
             Console.WriteLine($"Time remaining: 10:00");
             Console.WriteLine($"Order Price: {orderPrice:C}");
             Console.WriteLine("Choose payment method:");
@@ -180,9 +175,9 @@ namespace projektOOP.Classes
             DateTime startTime = DateTime.Now;
             string userInput = string.Empty;
             bool inPaymentProcess = false;
-            int inputLine = Console.CursorTop; // Remember where input is being taken
+            int inputLine = Console.CursorTop;
 
-            var timer = new System.Timers.Timer(1000); // Update every second
+            var timer = new System.Timers.Timer(1000);
             timer.Elapsed += (sender, e) =>
             {
                 if (inPaymentProcess) return;
@@ -198,15 +193,12 @@ namespace projektOOP.Classes
                     return;
                 }
 
-                // Save current cursor position
                 int currentLeft = Console.CursorLeft;
                 int currentTop = Console.CursorTop;
 
-                // Update only the time remaining line
                 Console.SetCursorPosition(0, 0);
                 Console.Write($"Time remaining: {remainingTime.Minutes:D2}:{remainingTime.Seconds:D2}".PadRight(Console.WindowWidth));
 
-                // Restore cursor position
                 Console.SetCursorPosition(currentLeft, currentTop);
             };
             timer.Start();
@@ -217,7 +209,6 @@ namespace projektOOP.Classes
 
                 if (inPaymentProcess)
                 {
-                    // Let the payment process handle the input
                     continue;
                 }
 
@@ -244,7 +235,7 @@ namespace projektOOP.Classes
                     timer.Stop();
 
                     Random random = new Random();
-                    bool paymentSuccess = random.Next(0, 100) >= 0.5; // 0,5% chance of failure
+                    bool paymentSuccess = random.Next(0, 100) >= 0.5;
 
                     switch (choice)
                     {
@@ -260,7 +251,6 @@ namespace projektOOP.Classes
                                 Console.ReadKey();
                                 inPaymentProcess = false;
                                 timer.Start();
-                                // Clear the payment method input lines
                                 Console.SetCursorPosition(0, inputLine + 1);
                                 Console.WriteLine(new string(' ', Console.WindowWidth));
                                 Console.WriteLine(new string(' ', Console.WindowWidth));
@@ -293,7 +283,6 @@ namespace projektOOP.Classes
                                 Console.ReadKey();
                                 inPaymentProcess = false;
                                 timer.Start();
-                                // Clear the payment method input lines
                                 for (int i = 1; i <= 4; i++)
                                 {
                                     Console.SetCursorPosition(0, inputLine + i);
@@ -320,7 +309,6 @@ namespace projektOOP.Classes
                         Console.ReadKey();
                         inPaymentProcess = false;
                         timer.Start();
-                        // Clear the payment method input lines
                         for (int i = 1; i <= (choice == 1 ? 2 : 4); i++)
                         {
                             Console.SetCursorPosition(0, inputLine + i);

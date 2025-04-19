@@ -26,7 +26,7 @@ namespace projektOOP.Utils
             if (!File.Exists("logs.txt")) return Enumerable.Empty<string>();
             return File.ReadLines("logs.txt").OrderByDescending(line =>
             {
-                var timestamp = line.Substring(1, 19); // Extract timestamp from [timestamp]
+                var timestamp = line.Substring(1, 19);
                 return DateTime.TryParse(timestamp, out var dt) ? dt : DateTime.MinValue;
             });
         }

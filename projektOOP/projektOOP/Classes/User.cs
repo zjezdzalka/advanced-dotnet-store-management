@@ -87,7 +87,7 @@ namespace projektOOP.Classes
                         break;
                 }
             }
-            logger.Log($"User {Username} viewed order logs");
+            logger.Log($"User {Username} viewed order logs.");
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
@@ -107,7 +107,7 @@ namespace projektOOP.Classes
             };
 
             var filteredMenuOptions = menuOptions
-                .Where(option => rbac.HasPermission(this, option.Key)) 
+                .Where(option => rbac.HasPermission(this, option.Key))
                 .ToDictionary(option => option.Key, option => option.Value);
 
             DisplayMenu(filteredMenuOptions, rbac);
@@ -116,9 +116,24 @@ namespace projektOOP.Classes
         private void PlaceOrder(ILogger logger, OrderManager orderManager)
         {
             Console.Clear();
-            if (!File.Exists("products.txt")) { Console.WriteLine("No products available!"); Console.ReadKey(); return; }
-            Console.Write("Enter product name: "); var name = Console.ReadLine();
-            Console.Write("Enter quantity: "); if (!int.TryParse(Console.ReadLine(), out int qty) || qty <= 0) { Console.WriteLine("Invalid quantity!"); Console.ReadKey(); return; }
+            if (!File.Exists("products.txt")) 
+            { 
+                Console.WriteLine("No products available!"); 
+                Console.ReadKey(); 
+                return; 
+            }
+
+            Console.Write("Enter product name: "); 
+            var name = Console.ReadLine();
+
+            Console.Write("Enter quantity: "); 
+            if (!int.TryParse(Console.ReadLine(), out int qty) || qty <= 0) 
+            { 
+                Console.WriteLine("Invalid quantity!");
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey(); 
+                return; 
+            }
             var products = File.ReadAllLines("products.txt").ToList();
             bool found = false;
             for (int i = 0; i < products.Count; i++)
@@ -155,7 +170,9 @@ namespace projektOOP.Classes
                         Console.WriteLine($"Requested quantity: {qty}");
                         Console.WriteLine("Press any key to continue...");
                     }
-                    found = true; break;
+
+                    found = true; 
+                    break;
                 }
             }
             if (!found) Console.WriteLine("Product not found!");
@@ -189,7 +206,6 @@ namespace projektOOP.Classes
                     Console.Clear();
                     Console.WriteLine("Transaction timed out!");
                     logger.Log($"User {Username} failed to complete payment of {orderPrice:C} within the 10-minute limit.");
-                    Environment.Exit(0);
                     return;
                 }
 
@@ -226,6 +242,7 @@ namespace projektOOP.Classes
                     if (choice == 0)
                     {
                         Console.WriteLine("\nPayment canceled.");
+                        Console.WriteLine("Press any key to continue...");
                         Console.ReadKey();
                         timer.Stop();
                         return false;
@@ -263,7 +280,7 @@ namespace projektOOP.Classes
                         case 2:
                             Console.SetCursorPosition(0, inputLine + 1);
                             Console.Write("Enter card number (16 digits): ".PadRight(Console.WindowWidth));
-                            Console.SetCursorPosition("Enter card number (16 digits): ".Length, inputLine + 1);
+                            Console.SetCursorPosition("Enter card number (16 digits without spaces): ".Length, inputLine + 1);
                             var cardNumber = Console.ReadLine();
                             Console.SetCursorPosition(0, inputLine + 2);
                             Console.Write("Enter expiration date (MM/YY): ".PadRight(Console.WindowWidth));
@@ -281,12 +298,13 @@ namespace projektOOP.Classes
                                 Console.SetCursorPosition(0, inputLine + 4);
                                 Console.WriteLine("Invalid card information!".PadRight(Console.WindowWidth));
                                 Console.ReadKey();
+                                Console.WriteLine("Press any key to continue...");
                                 inPaymentProcess = false;
                                 timer.Start();
                                 for (int i = 1; i <= 4; i++)
                                 {
                                     Console.SetCursorPosition(0, inputLine + i);
-                                    Console.WriteLine(new string(' ', Console.WindowWidth));
+                                    Console.WriteLine();
                                 }
                                 Console.SetCursorPosition("Your choice: ".Length, inputLine);
                                 userInput = string.Empty;
@@ -355,7 +373,7 @@ namespace projektOOP.Classes
                 Console.WriteLine("User removed successfully!");
                 logger.Log($"User {Username} removed user {username}");
             }
-            else if(userToRemove == null)
+            else if (userToRemove == null)
             {
                 Console.WriteLine("User not found!");
             }
@@ -402,32 +420,57 @@ namespace projektOOP.Classes
                         break;
                 }
             }
-            logger.Log($"User {Username} viewed user list");
+            logger.Log($"User {Username} viewed user list.");
         }
 
         private void UpdateStock(ILogger logger)
         {
             Console.Clear();
-            if (!File.Exists("products.txt")) { Console.WriteLine("No products available!"); Console.ReadKey(); return; }
-            Console.Write("Enter product name: "); var name = Console.ReadLine();
-            Console.Write("Enter new quantity: "); if (!int.TryParse(Console.ReadLine(), out int qty)) { Console.WriteLine("Invalid quantity!"); Console.ReadKey(); return; }
+
+            if (!File.Exists("products.txt"))
+            {
+                Console.WriteLine("No products available!");
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.Write("Enter product name: ");
+            var name = Console.ReadLine();
+
+            Console.Write("Enter new quantity: ");
+            if (!int.TryParse(Console.ReadLine(), out int qty))
+            {
+                Console.WriteLine("Invalid quantity!");
+                Console.Write($"Enter new quantity: ");
+                Console.ReadKey();
+                return;
+            }
+
             var products = File.ReadAllLines("products.txt").ToList();
             bool found = false;
+
             for (int i = 0; i < products.Count; i++)
             {
                 var parts = products[i].Split(',');
+
                 if (parts[0].Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
-                    parts[1] = qty.ToString(); products[i] = string.Join(",", parts); found = true; break;
+                    parts[1] = qty.ToString(); 
+                    products[i] = string.Join(",", parts);
+                    found = true;
+                    break;
                 }
             }
+
             if (found)
             {
                 File.WriteAllLines("products.txt", products);
                 Console.WriteLine("Stock updated successfully!");
-                logger.Log($"User {Username} updated stock for {name}");
+                logger.Log($"User {Username} updated stock for {name}.");
             }
             else Console.WriteLine("Product not found!");
+
             Console.ReadKey();
         }
 
@@ -439,6 +482,7 @@ namespace projektOOP.Classes
             if (fileLogger == null || !File.Exists("logs.txt"))
             {
                 Console.WriteLine("No logs found!");
+                Console.WriteLine("Press any key to continue...");
             }
             else
             {
@@ -465,7 +509,7 @@ namespace projektOOP.Classes
                         break;
                 }
             }
-            logger.Log($"User {Username} viewed logs");
+            logger.Log($"User {Username} viewed logs.");
         }
 
         private void ViewProducts(ILogger logger)
@@ -512,7 +556,15 @@ namespace projektOOP.Classes
             Console.WriteLine($"USER PROFILE - {Username}");
             Console.WriteLine($"Role: {Role}");
             Console.WriteLine($"Account created: {CreationDate:yyyy-MM-dd HH:mm:ss}");
-            logger.Log($"User {Username} viewed profile");
+
+            Console.WriteLine($"Account permissions: ");
+
+            foreach(var perm in Permissions)
+            {
+                Console.WriteLine($"- {perm}");
+            }
+
+            logger.Log($"User {Username} viewed his profile.");
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }

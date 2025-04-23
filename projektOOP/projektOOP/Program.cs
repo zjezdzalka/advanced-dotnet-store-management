@@ -58,9 +58,9 @@ namespace ProjektOOP
             if (!File.Exists("users.txt"))
             {
                 var passwordManager = new PasswordManager();
-                var pwdAdmin = "admin123";
-                var pwdManager = "manager123";
-                var pwdUser = "user123";
+                var pwdAdmin = "123";
+                var pwdManager = "1234";
+                var pwdUser = "12345";
                 var hash = passwordManager.HashPassword(pwdAdmin);
                 File.WriteAllText("users.txt", $"admin,{hash},Administrator,{DateTime.Now:yyyy-MM-dd HH:mm:ss}\n");
                 hash = passwordManager.HashPassword(pwdManager);
@@ -78,6 +78,4 @@ namespace ProjektOOP
             if (!File.Exists("logs.txt")) File.WriteAllText("logs.txt", "");
         }
     }
-    
-
 }

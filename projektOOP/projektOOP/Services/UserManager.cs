@@ -31,7 +31,7 @@ namespace projektOOP.Services
                     if (user != null)
                     {
                         OnUserAction(username, "logged in");
-                        logger.Log($"Successful login for {username}");
+                        logger.Log($"Successful login for {username}.");
                         return user;
                     }
                 }

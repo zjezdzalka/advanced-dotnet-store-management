@@ -6,8 +6,17 @@ using projektOOP.Interfaces;
 
 namespace projektOOP.Utils
 {
+    /// <summary>
+    /// Provides functionality to log messages to a file and retrieve logged messages.
+    /// Implements the <see cref="ILogger"/> interface.
+    /// </summary>
     public class FileLogger : ILogger
     {
+        /// <summary>
+        /// Logs a message to a file named "logs.txt".
+        /// Each log entry is timestamped with the current date and time.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
         public void Log(string message)
         {
             try
@@ -21,6 +30,13 @@ namespace projektOOP.Utils
             }
         }
 
+        /// <summary>
+        /// Retrieves all log entries from the "logs.txt" file in descending order of their timestamps.
+        /// If the file does not exist, returns an empty collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> of log entries, ordered by timestamp in descending order.
+        /// </returns>
         public IEnumerable<string> GetLogs()
         {
             if (!File.Exists("logs.txt")) return Enumerable.Empty<string>();

@@ -20,6 +20,11 @@ namespace projektOOP.Classes
         public List<Permission> Permissions { get; set; } = new List<Permission>();
         public DateTime CreationDate { get; set; }
 
+        /// <summary>
+        /// Displays a menu of options available to the user based on their permissions.
+        /// </summary>
+        /// <param name="menuOptions">A dictionary of permissions and their corresponding menu options.</param>
+        /// <param name="rbac">The RBAC system to check user permissions.</param>
         private void DisplayMenu(Dictionary<Permission, (string, Action)> menuOptions, RBAC rbac)
         {
             while (true)
@@ -54,6 +59,12 @@ namespace projektOOP.Classes
                 availableOptions[choice].Invoke();
             }
         }
+
+        /// <summary>
+        /// Displays a paginated list of order logs for the user.
+        /// </summary>
+        /// <param name="logger">The logger to log user actions.</param>
+        /// <param name="orderManager">The order manager to retrieve order logs.</param>
         private void ViewOrders(ILogger logger, OrderManager orderManager)
         {
             Console.Clear();
@@ -92,6 +103,13 @@ namespace projektOOP.Classes
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Displays the main menu for the user, allowing them to perform actions based on their permissions.
+        /// </summary>
+        /// <param name="passwordManager">The password manager for handling password-related actions.</param>
+        /// <param name="logger">The logger to log user actions.</param>
+        /// <param name="rbac">The RBAC system to check user permissions.</param>
+        /// <param name="orderManager">The order manager for handling order-related actions.</param>
         public void ShowMenu(PasswordManager passwordManager, ILogger logger, RBAC rbac, OrderManager orderManager)
         {
             var menuOptions = new Dictionary<Permission, (string, Action)>
@@ -113,6 +131,11 @@ namespace projektOOP.Classes
             DisplayMenu(filteredMenuOptions, rbac);
         }
 
+        /// <summary>
+        /// Allows the user to place an order for a product.
+        /// </summary>
+        /// <param name="logger">The logger to log user actions.</param>
+        /// <param name="orderManager">The order manager to log the placed order.</param>
         private void PlaceOrder(ILogger logger, OrderManager orderManager)
         {
             Console.Clear();
@@ -178,6 +201,13 @@ namespace projektOOP.Classes
             if (!found) Console.WriteLine("Product not found!");
             Console.ReadKey();
         }
+
+        /// <summary>
+        /// Handles the payment process for an order.
+        /// </summary>
+        /// <param name="orderPrice">The total price of the order.</param>
+        /// <param name="logger">The logger to log payment actions.</param>
+        /// <returns>True if the payment is successful; otherwise, false.</returns>
         private bool MakePayment(decimal orderPrice, ILogger logger)
         {
             Console.Clear();
@@ -350,6 +380,10 @@ namespace projektOOP.Classes
             }
         }
 
+        /// <summary>
+        /// Removes a user from the system.
+        /// </summary>
+        /// <param name="logger">The logger to log user actions.</param>
         private void RemoveUser(ILogger logger)
         {
             Console.Clear();
@@ -387,6 +421,10 @@ namespace projektOOP.Classes
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Displays a paginated list of all users in the system.
+        /// </summary>
+        /// <param name="logger">The logger to log user actions.</param>
         private void ListUsers(ILogger logger)
         {
             Console.Clear();
@@ -423,6 +461,10 @@ namespace projektOOP.Classes
             logger.Log($"User {Username} viewed user list.");
         }
 
+        /// <summary>
+        /// Updates the stock quantity of a product.
+        /// </summary>
+        /// <param name="logger">The logger to log user actions.</param>
         private void UpdateStock(ILogger logger)
         {
             Console.Clear();
@@ -474,6 +516,10 @@ namespace projektOOP.Classes
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Displays a paginated list of system logs.
+        /// </summary>
+        /// <param name="logger">The logger to retrieve and log user actions.</param>
         private void ViewLogs(ILogger logger)
         {
             Console.Clear();
@@ -512,6 +558,10 @@ namespace projektOOP.Classes
             logger.Log($"User {Username} viewed logs.");
         }
 
+        /// <summary>
+        /// Displays a paginated list of available products.
+        /// </summary>
+        /// <param name="logger">The logger to log user actions.</param>
         private void ViewProducts(ILogger logger)
         {
             Console.Clear();
@@ -550,6 +600,10 @@ namespace projektOOP.Classes
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Displays the profile information of the user.
+        /// </summary>
+        /// <param name="logger">The logger to log user actions.</param>
         private void ViewProfile(ILogger logger)
         {
             Console.Clear();
@@ -570,3 +624,4 @@ namespace projektOOP.Classes
         }
     }
 }
+
